@@ -50,8 +50,8 @@ export class Game {
     this.entity1Id = this.entityManager.addEntity("E1");
     this.entity2Id = this.entityManager.addEntity("E2");
 
-    const transformComponent1 = new PositionComponent(0, 0);
-    const transformComponent2 = new PositionComponent(15, 0);
+    const positionComponent1 = new PositionComponent(50, 50);
+    const positionComponent2 = new PositionComponent(100, 75);
     const renderComponent1 = new RenderComponent("red", {
       scaleFactor: config.scaleFactor,
     });
@@ -59,9 +59,9 @@ export class Game {
       scaleFactor: config.scaleFactor,
     });
 
-    this.componentManager.addComponent(this.entity1Id, transformComponent1);
+    this.componentManager.addComponent(this.entity1Id, positionComponent1);
     this.componentManager.addComponent(this.entity1Id, renderComponent1);
-    this.componentManager.addComponent(this.entity2Id, transformComponent2);
+    this.componentManager.addComponent(this.entity2Id, positionComponent2);
     this.componentManager.addComponent(this.entity2Id, renderComponent2);
 
     // Systems
@@ -86,6 +86,7 @@ export class Game {
         canvasId: config.canvasId,
         canvasWidth: config.canvasWidth,
         canvasHeight: config.canvasHeight,
+        scaleFactor: config.scaleFactor,
       },
       this.logger
     );

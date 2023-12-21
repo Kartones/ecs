@@ -5,27 +5,19 @@ const colorsMap = {
   blue: [0, 0, 255],
 };
 
-let scaleFactor;
-
 export class RenderComponent extends BaseComponent {
-  #sprite;
+  sprite;
 
-  constructor(color, config = {}) {
+  constructor(color, config) {
     super();
     if (!colorsMap[color]) {
       throw new Error(`Color '${color}' is not supported`);
     }
 
-    scaleFactor = config.scaleFactor;
-
-    this._initSprite(color);
+    this._initSprite(color, config.scaleFactor);
   }
 
-  draw(canvasContext, x, y) {
-    this._drawPixel(canvasContext, x, y);
-  }
-
-  _initSprite(color) {
+  _initSprite(color, scaleFactor) {
     let colorComponents = new Array();
     for (let pixelNum = 0; pixelNum < scaleFactor * scaleFactor; pixelNum++) {
       // 255 -> no transparency for alpha channel
@@ -35,10 +27,6 @@ export class RenderComponent extends BaseComponent {
       Uint8ClampedArray.from(colorComponents),
       scaleFactor
     );
-    this.#sprite = pixels;
-  }
-
-  _drawPixel(canvasContext, x, y) {
-    canvasContext.putImageData(this.#sprite, x * scaleFactor, y * scaleFactor);
+    this.sprite = pixels;
   }
 }

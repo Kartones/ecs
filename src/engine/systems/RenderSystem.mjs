@@ -3,9 +3,12 @@ import { BaseSystem } from "./BaseSystem.mjs";
 export class RenderSystem extends BaseSystem {
   #canvas;
   #canvasContext;
+  scaleFactor;
 
-  constructor(componentManager, config = {}, logger) {
+  constructor(componentManager, config, logger) {
     super(componentManager, logger);
+
+    this.scaleFactor = config.scaleFactor;
 
     this._initScreen(config.canvasId, config.canvasWidth, config.canvasHeight);
   }
@@ -31,8 +34,8 @@ export class RenderSystem extends BaseSystem {
         return;
       }
 
-      renderComponent.draw(
-        this.#canvasContext,
+      this._drawSprite(
+        renderComponent.sprite,
         positionComponent.x,
         positionComponent.y
       );
@@ -47,5 +50,13 @@ export class RenderSystem extends BaseSystem {
     this.#canvasContext = this.#canvas.getContext("2d");
     // Don't smooth pixels
     this.#canvasContext.imageSmoothingEnabled = false;
+  }
+
+  _drawSprite(sprite, x, y) {
+    this.#canvasContext.putImageData(
+      sprite,
+      x * this.scaleFactor,
+      y * this.scaleFactor
+    );
   }
 }
