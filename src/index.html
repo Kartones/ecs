@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ECS Example</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css">
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="shortcut icon" type="image/ico" href="https://kartones.net/favicon.ico" />
+</head>
+<body>
+
+  <canvas id="game-canvas"></canvas>
+
+  <p>
+    Press <strong>W</strong>, <strong>S</strong>, <strong>A</strong>, <strong>D</strong> , or the <strong>cursors</strong>, to move.<br/>
+    Press <strong>Space</strong> to reset the entity positions to a new random location.
+  </p>
+
+  <script type="module">
+    import { Game } from "./game.mjs";
+
+    let game;
+
+    window.addEventListener("load", (event) => {
+        game = new Game({ canvasId:"game-canvas" });
+        game.start();
+    });
+  </script>
+</body>
+</html>

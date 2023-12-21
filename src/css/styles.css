@@ -1,0 +1,14 @@
+body {
+  background-color:#1D1D1D;
+}
+canvas {
+  border: 0px solid #000;
+  background-color: #000;
+}
+p {
+  color: #fff;
+  font-family: Arial;
+  font-size: 16px;
+  margin: 0px;
+  padding: 0px;
+}

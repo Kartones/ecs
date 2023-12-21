@@ -1,11 +1,23 @@
 import { BaseSystem } from "./BaseSystem.mjs";
 
 export class RenderSystem extends BaseSystem {
-  constructor(componentManager, logger) {
+  #canvas;
+  #canvasContext;
+
+  constructor(componentManager, config = {}, logger) {
     super(componentManager, logger);
+
+    this._initScreen(config.canvasId, config.canvasWidth, config.canvasHeight);
   }
 
   update() {
+    this.#canvasContext.clearRect(
+      0,
+      0,
+      this.#canvas.width,
+      this.#canvas.height
+    );
+
     Object.keys(this.componentManager.components).forEach((entityId) => {
       const positionComponent = this.componentManager.getComponentByType(
         entityId,
@@ -19,10 +31,21 @@ export class RenderSystem extends BaseSystem {
         return;
       }
 
-      this.logger.log(
-        `Rendering Entity ${entityId} at (${positionComponent.x}, ${positionComponent.y}) with color '${renderComponent.color}'`
+      renderComponent.draw(
+        this.#canvasContext,
+        positionComponent.x,
+        positionComponent.y
       );
-      // TODO: render
     });
+  }
+
+  _initScreen(canvasId, canvasWidth, canvasHeight) {
+    this.#canvas = document.getElementById(canvasId);
+    this.#canvas.width = canvasWidth;
+    this.#canvas.height = canvasHeight;
+
+    this.#canvasContext = this.#canvas.getContext("2d");
+    // Don't smooth pixels
+    this.#canvasContext.imageSmoothingEnabled = false;
   }
 }
