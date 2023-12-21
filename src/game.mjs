@@ -20,13 +20,13 @@ const BOUNDARIES = {
 };
 
 export class Game {
-  logger;
-  componentManager;
-  systemManager;
-  entityManager;
-  entity1Id;
-  entity2Id;
-  speed;
+  #logger;
+  #componentManager;
+  #systemManager;
+  #entityManager;
+  #entity1Id;
+  #entity2Id;
+  #speed;
   #gameUpdateId;
 
   constructor(config = {}) {
@@ -38,17 +38,17 @@ export class Game {
       ...config,
     };
 
-    this.speed = config.engineSpeed;
+    this.#speed = config.engineSpeed;
 
-    this.logger = new NoConsole();
+    this.#logger = new NoConsole();
     // this.logger = console;
-    this.componentManager = new ComponentManager();
-    this.systemManager = new SystemManager();
-    this.entityManager = new EntityManager();
+    this.#componentManager = new ComponentManager();
+    this.#systemManager = new SystemManager();
+    this.#entityManager = new EntityManager();
 
     // Entities & components
-    this.entity1Id = this.entityManager.addEntity("E1");
-    this.entity2Id = this.entityManager.addEntity("E2");
+    this.#entity1Id = this.#entityManager.addEntity("E1");
+    this.#entity2Id = this.#entityManager.addEntity("E2");
 
     const positionComponent1 = new PositionComponent(50, 50);
     const positionComponent2 = new PositionComponent(100, 75);
@@ -59,52 +59,52 @@ export class Game {
       scaleFactor: config.scaleFactor,
     });
 
-    this.componentManager.addComponent(this.entity1Id, positionComponent1);
-    this.componentManager.addComponent(this.entity1Id, renderComponent1);
-    this.componentManager.addComponent(this.entity2Id, positionComponent2);
-    this.componentManager.addComponent(this.entity2Id, renderComponent2);
+    this.#componentManager.addComponent(this.#entity1Id, positionComponent1);
+    this.#componentManager.addComponent(this.#entity1Id, renderComponent1);
+    this.#componentManager.addComponent(this.#entity2Id, positionComponent2);
+    this.#componentManager.addComponent(this.#entity2Id, renderComponent2);
 
     // Systems
     const inputSystem = new InputSystem(
-      this.componentManager,
+      this.#componentManager,
       {
         boundaries: BOUNDARIES,
         movementSpeed: MOVEMENT_SPEED,
       },
-      this.logger
+      this.#logger
     );
     const movementSystem = new MovementSystem(
-      this.componentManager,
+      this.#componentManager,
       {
         boundaries: BOUNDARIES,
       },
-      this.logger
+      this.#logger
     );
     const renderSystem = new RenderSystem(
-      this.componentManager,
+      this.#componentManager,
       {
         canvasId: config.canvasId,
         canvasWidth: config.canvasWidth,
         canvasHeight: config.canvasHeight,
         scaleFactor: config.scaleFactor,
       },
-      this.logger
+      this.#logger
     );
 
-    this.systemManager.addSystem(inputSystem);
-    this.systemManager.addSystem(movementSystem);
-    this.systemManager.addSystem(renderSystem);
+    this.#systemManager.addSystem(inputSystem);
+    this.#systemManager.addSystem(movementSystem);
+    this.#systemManager.addSystem(renderSystem);
 
-    this.systemManager.info();
+    this.#systemManager.info();
   }
 
   start() {
-    this.update();
+    this._update();
   }
 
-  update() {
-    this.systemManager.update();
+  _update() {
+    this.#systemManager.update();
 
-    this.#gameUpdateId = setTimeout(this.update.bind(this), this.speed);
+    this.#gameUpdateId = setTimeout(this._update.bind(this), this.#speed);
   }
 }
