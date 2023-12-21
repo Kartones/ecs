@@ -2,7 +2,7 @@
 
 ## Intro
 
-A very basic [Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system) implementation in vanilla Javascript. 
+A basic [Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system) implementation in vanilla Javascript. 
 
 Captures keyboard input and renders basic pixels in an HTML canvas element.
 
