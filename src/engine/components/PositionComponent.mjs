@@ -5,8 +5,8 @@ export class PositionComponent extends BaseComponent {
   y;
   velocity;
 
-  constructor(x, y) {
-    super();
+  constructor(entityId, x, y) {
+    super(entityId);
     this.x = x;
     this.y = y;
 

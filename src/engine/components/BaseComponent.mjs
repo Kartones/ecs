@@ -1,5 +1,9 @@
 export class BaseComponent {
-  constructor() {
+  entityId;
+  type;
+
+  constructor(entityId) {
+    this.entityId = entityId;
     this.type = this.constructor.name;
   }
 }

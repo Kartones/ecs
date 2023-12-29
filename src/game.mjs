@@ -50,19 +50,19 @@ export class Game {
     this.#entity1Id = this.#entityManager.addEntity("E1");
     this.#entity2Id = this.#entityManager.addEntity("E2");
 
-    const positionComponent1 = new PositionComponent(50, 50);
-    const positionComponent2 = new PositionComponent(100, 75);
-    const renderComponent1 = new RenderComponent("red", {
+    const positionComponent1 = new PositionComponent(this.#entity1Id, 50, 50);
+    const positionComponent2 = new PositionComponent(this.#entity2Id, 100, 75);
+    const renderComponent1 = new RenderComponent(this.#entity1Id, "red", {
       scaleFactor: config.scaleFactor,
     });
-    const renderComponent2 = new RenderComponent("blue", {
+    const renderComponent2 = new RenderComponent(this.#entity2Id, "blue", {
       scaleFactor: config.scaleFactor,
     });
 
-    this.#componentManager.addComponent(this.#entity1Id, positionComponent1);
-    this.#componentManager.addComponent(this.#entity1Id, renderComponent1);
-    this.#componentManager.addComponent(this.#entity2Id, positionComponent2);
-    this.#componentManager.addComponent(this.#entity2Id, renderComponent2);
+    this.#componentManager.addComponent(positionComponent1);
+    this.#componentManager.addComponent(renderComponent1);
+    this.#componentManager.addComponent(positionComponent2);
+    this.#componentManager.addComponent(renderComponent2);
 
     // Systems
     const inputSystem = new InputSystem(

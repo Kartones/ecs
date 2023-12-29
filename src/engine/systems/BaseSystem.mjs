@@ -7,6 +7,10 @@ function stringifyReplacer(key, value) {
 }
 
 export class BaseSystem {
+  type;
+  logger;
+  componentManager;
+
   constructor(componentManager, logger) {
     this.type = this.constructor.name;
     this.logger = logger;

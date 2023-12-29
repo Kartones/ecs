@@ -8,8 +8,8 @@ const colorsMap = {
 export class RenderComponent extends BaseComponent {
   sprite;
 
-  constructor(color, config) {
-    super();
+  constructor(entityId, color, config) {
+    super(entityId);
     if (!colorsMap[color]) {
       throw new Error(`Color '${color}' is not supported`);
     }

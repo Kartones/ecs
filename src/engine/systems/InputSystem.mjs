@@ -1,5 +1,7 @@
 import { BaseSystem } from "./BaseSystem.mjs";
 
+import { POSITION_COMPONENT } from "../components/constants.mjs";
+
 export class InputSystem extends BaseSystem {
   #boundaries;
   #movementSpeed;
@@ -19,42 +21,42 @@ export class InputSystem extends BaseSystem {
   }
 
   update() {
-    Object.keys(this.componentManager.components).forEach((entityId) => {
-      const positionComponent = this.componentManager.getComponentByType(
-        entityId,
-        "PositionComponent"
-      );
-      if (!positionComponent) {
-        return;
-      }
+    this.componentManager
+      .getComponentsByType(POSITION_COMPONENT)
+      .forEach((positionComponent) => {
+        if (
+          this.#pressedKeys.has("KeyA") ||
+          this.#pressedKeys.has("ArrowLeft")
+        ) {
+          positionComponent.velocity.x -= this.#movementSpeed;
+        }
+        if (
+          this.#pressedKeys.has("KeyD") ||
+          this.#pressedKeys.has("ArrowRight")
+        ) {
+          positionComponent.velocity.x += this.#movementSpeed;
+        }
+        if (this.#pressedKeys.has("KeyW") || this.#pressedKeys.has("ArrowUp")) {
+          positionComponent.velocity.y -= this.#movementSpeed;
+        }
+        if (
+          this.#pressedKeys.has("KeyS") ||
+          this.#pressedKeys.has("ArrowDown")
+        ) {
+          positionComponent.velocity.y += this.#movementSpeed;
+        }
+        if (this.#pressedKeys.has("Space")) {
+          positionComponent.velocity.x = 0;
+          positionComponent.velocity.y = 0;
 
-      if (this.#pressedKeys.has("KeyA") || this.#pressedKeys.has("ArrowLeft")) {
-        positionComponent.velocity.x -= this.#movementSpeed;
-      }
-      if (
-        this.#pressedKeys.has("KeyD") ||
-        this.#pressedKeys.has("ArrowRight")
-      ) {
-        positionComponent.velocity.x += this.#movementSpeed;
-      }
-      if (this.#pressedKeys.has("KeyW") || this.#pressedKeys.has("ArrowUp")) {
-        positionComponent.velocity.y -= this.#movementSpeed;
-      }
-      if (this.#pressedKeys.has("KeyS") || this.#pressedKeys.has("ArrowDown")) {
-        positionComponent.velocity.y += this.#movementSpeed;
-      }
-      if (this.#pressedKeys.has("Space")) {
-        positionComponent.velocity.x = 0;
-        positionComponent.velocity.y = 0;
+          positionComponent.x = Math.floor(Math.random() * this.#boundaries.x);
+          positionComponent.y = Math.floor(Math.random() * this.#boundaries.y);
+        }
 
-        positionComponent.x = Math.floor(Math.random() * this.#boundaries.x);
-        positionComponent.y = Math.floor(Math.random() * this.#boundaries.y);
-      }
-
-      // this.logger.log(
-      //   `${entityId} velocity: (${positionComponent.velocity.x},${positionComponent.velocity.y})`
-      // );
-    });
+        // this.logger.log(
+        //   `${positionComponent.entityId} velocity: (${positionComponent.velocity.x},${positionComponent.velocity.y})`
+        // );
+      });
 
     this.#pressedKeys.clear();
   }

@@ -1,8 +1,10 @@
 import { randomAlphanumericstring } from "../utils/random.mjs";
 
 export class EntityManager {
+  #entities;
+
   constructor() {
-    this.entities = {};
+    this.#entities = [];
   }
 
   addEntity(entityidPrefix = "") {
@@ -10,14 +12,12 @@ export class EntityManager {
       entityidPrefix ? entityidPrefix + ":" : ""
     }${randomAlphanumericstring()}`;
 
-    this.entities[entityId] = {
-      id: entityId,
-    };
+    this.#entities.push(entityId);
 
     return entityId;
   }
 
   entityExists(entityId) {
-    return this.entities[entityId] !== undefined;
+    return this.#entities.includes(entityId);
   }
 }

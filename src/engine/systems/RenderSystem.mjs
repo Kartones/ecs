@@ -1,14 +1,19 @@
 import { BaseSystem } from "./BaseSystem.mjs";
 
+import {
+  POSITION_COMPONENT,
+  RENDER_COMPONENT,
+} from "../components/constants.mjs";
+
 export class RenderSystem extends BaseSystem {
   #canvas;
   #canvasContext;
-  scaleFactor;
+  #scaleFactor;
 
   constructor(componentManager, config, logger) {
     super(componentManager, logger);
 
-    this.scaleFactor = config.scaleFactor;
+    this.#scaleFactor = config.scaleFactor;
 
     this._initScreen(config.canvasId, config.canvasWidth, config.canvasHeight);
   }
@@ -21,25 +26,18 @@ export class RenderSystem extends BaseSystem {
       this.#canvas.height
     );
 
-    Object.keys(this.componentManager.components).forEach((entityId) => {
-      const positionComponent = this.componentManager.getComponentByType(
-        entityId,
-        "PositionComponent"
-      );
-      const renderComponent = this.componentManager.getComponentByType(
-        entityId,
-        "RenderComponent"
-      );
-      if (!(positionComponent && renderComponent)) {
-        return;
-      }
+    this.componentManager
+      .getComponentsByTypes(RENDER_COMPONENT, POSITION_COMPONENT)
+      .forEach((entityComponents) => {
+        const renderComponent = entityComponents[RENDER_COMPONENT];
+        const positionComponent = entityComponents[POSITION_COMPONENT];
 
-      this._drawSprite(
-        renderComponent.sprite,
-        positionComponent.x,
-        positionComponent.y
-      );
-    });
+        this._drawSprite(
+          renderComponent.sprite,
+          positionComponent.x,
+          positionComponent.y
+        );
+      });
   }
 
   _initScreen(canvasId, canvasWidth, canvasHeight) {
@@ -55,8 +53,8 @@ export class RenderSystem extends BaseSystem {
   _drawSprite(sprite, x, y) {
     this.#canvasContext.putImageData(
       sprite,
-      x * this.scaleFactor,
-      y * this.scaleFactor
+      x * this.#scaleFactor,
+      y * this.#scaleFactor
     );
   }
 }
