@@ -1,46 +1,62 @@
 import { BaseSystem } from "./BaseSystem.mjs";
 
-import { POSITION_COMPONENT } from "../components/constants.mjs";
+import {
+  POSITION_COMPONENT,
+  WORLD_COMPONENT,
+} from "../components/constants.mjs";
 
 export class MovementSystem extends BaseSystem {
-  #boundaries;
-
   constructor(componentManager, config = {}, logger) {
     super(componentManager, logger);
-
-    this.#boundaries = {
-      x: config.boundaries.x,
-      y: config.boundaries.y,
-    };
   }
 
   update() {
+    const worldComponent =
+      this.componentManager.getComponentByType(WORLD_COMPONENT);
+
     this.componentManager
       .getComponentsByType(POSITION_COMPONENT)
       .forEach((positionComponent) => {
-        positionComponent.x += positionComponent.velocity.x;
-        positionComponent.y += positionComponent.velocity.y;
-
-        if (positionComponent.x < 0) {
-          positionComponent.x = 0;
-          positionComponent.velocity.x = 0;
+        if (this._canMoveXAxis(positionComponent, worldComponent)) {
+          positionComponent.x += positionComponent.velocity.x;
+        } else {
+          if (positionComponent.velocity.x > 0) {
+            positionComponent.velocity.x--;
+          } else if (positionComponent.velocity.x < 0) {
+            positionComponent.velocity.x++;
+          }
         }
-        if (positionComponent.y < 0) {
-          positionComponent.y = 0;
-          positionComponent.velocity.y = 0;
-        }
-        if (positionComponent.x > this.#boundaries.x) {
-          positionComponent.x = this.#boundaries.x - 1;
-          positionComponent.velocity.x = 0;
-        }
-        if (positionComponent.y > this.#boundaries.y) {
-          positionComponent.y = this.#boundaries.y - 1;
-          positionComponent.velocity.y = 0;
+        if (this._canMoveYAxis(positionComponent, worldComponent)) {
+          positionComponent.y += positionComponent.velocity.y;
+        } else {
+          if (positionComponent.velocity.y > 0) {
+            positionComponent.velocity.y--;
+          } else if (positionComponent.velocity.y < 0) {
+            positionComponent.velocity.y++;
+          }
         }
 
         this.logger.log(
           `${positionComponent.entityId} position: (${positionComponent.x},${positionComponent.y})`
         );
       });
+  }
+
+  _canMoveXAxis(positionComponent, worldComponent) {
+    return (
+      positionComponent.velocity.x === 0 ||
+      (positionComponent.x + positionComponent.velocity.x >= 0 &&
+        positionComponent.x + positionComponent.velocity.x <
+          worldComponent.width)
+    );
+  }
+
+  _canMoveYAxis(positionComponent, worldComponent) {
+    return (
+      positionComponent.velocity.y === 0 ||
+      (positionComponent.y + positionComponent.velocity.y >= 0 &&
+        positionComponent.y + positionComponent.velocity.y <
+          worldComponent.height)
+    );
   }
 }

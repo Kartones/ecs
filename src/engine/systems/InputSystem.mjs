@@ -1,19 +1,16 @@
 import { BaseSystem } from "./BaseSystem.mjs";
 
-import { POSITION_COMPONENT } from "../components/constants.mjs";
+import {
+  POSITION_COMPONENT,
+  WORLD_COMPONENT,
+} from "../components/constants.mjs";
 
 export class InputSystem extends BaseSystem {
-  #boundaries;
   #movementSpeed;
   #pressedKeys = new Set();
 
   constructor(componentManager, config = {}, logger) {
     super(componentManager, logger);
-
-    this.#boundaries = {
-      x: config.boundaries.x,
-      y: config.boundaries.y,
-    };
 
     this.#movementSpeed = config.movementSpeed || 1;
 
@@ -21,6 +18,9 @@ export class InputSystem extends BaseSystem {
   }
 
   update() {
+    const worldComponent =
+      this.componentManager.getComponentByType(WORLD_COMPONENT);
+
     this.componentManager
       .getComponentsByType(POSITION_COMPONENT)
       .forEach((positionComponent) => {
@@ -49,8 +49,12 @@ export class InputSystem extends BaseSystem {
           positionComponent.velocity.x = 0;
           positionComponent.velocity.y = 0;
 
-          positionComponent.x = Math.floor(Math.random() * this.#boundaries.x);
-          positionComponent.y = Math.floor(Math.random() * this.#boundaries.y);
+          positionComponent.x = Math.floor(
+            Math.random() * worldComponent.width
+          );
+          positionComponent.y = Math.floor(
+            Math.random() * worldComponent.height
+          );
         }
 
         // this.logger.log(

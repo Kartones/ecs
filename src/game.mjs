@@ -1,5 +1,6 @@
 import { PositionComponent } from "./engine/components/PositionComponent.mjs";
 import { RenderComponent } from "./engine/components/RenderComponent.mjs";
+import { WorldComponent } from "./engine/components/WorldComponent.mjs";
 import { InputSystem } from "./engine/systems/InputSystem.mjs";
 import { MovementSystem } from "./engine/systems/MovementSystem.mjs";
 import { RenderSystem } from "./engine/systems/RenderSystem.mjs";
@@ -24,6 +25,7 @@ export class Game {
   #componentManager;
   #systemManager;
   #entityManager;
+  #worldEntityId;
   #entity1Id;
   #entity2Id;
   #speed;
@@ -47,9 +49,15 @@ export class Game {
     this.#entityManager = new EntityManager();
 
     // Entities & components
+    this.#worldEntityId = this.#entityManager.addEntity("W");
     this.#entity1Id = this.#entityManager.addEntity("E1");
     this.#entity2Id = this.#entityManager.addEntity("E2");
 
+    const worldComponent = new WorldComponent(
+      this.#worldEntityId,
+      BOUNDARIES.x,
+      BOUNDARIES.y
+    );
     const positionComponent1 = new PositionComponent(this.#entity1Id, 50, 50);
     const positionComponent2 = new PositionComponent(this.#entity2Id, 100, 75);
     const renderComponent1 = new RenderComponent(this.#entity1Id, "red", {
@@ -59,6 +67,7 @@ export class Game {
       scaleFactor: config.scaleFactor,
     });
 
+    this.#componentManager.addComponent(worldComponent);
     this.#componentManager.addComponent(positionComponent1);
     this.#componentManager.addComponent(renderComponent1);
     this.#componentManager.addComponent(positionComponent2);
@@ -68,16 +77,13 @@ export class Game {
     const inputSystem = new InputSystem(
       this.#componentManager,
       {
-        boundaries: BOUNDARIES,
         movementSpeed: MOVEMENT_SPEED,
       },
       this.#logger
     );
     const movementSystem = new MovementSystem(
       this.#componentManager,
-      {
-        boundaries: BOUNDARIES,
-      },
+      {}, // No config
       this.#logger
     );
     const renderSystem = new RenderSystem(

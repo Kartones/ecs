@@ -21,6 +21,21 @@ export class ComponentManager {
     return components.find((component) => component.type === componentType);
   }
 
+  // Intended to be used with "singleton" components
+  getComponentByType(componentType) {
+    const entityWithComponent = Object.values(this.#componentsByEntity).find(
+      (entityComponents) =>
+        entityComponents.find((component) => component.type === componentType)
+    );
+
+    if (entityWithComponent) {
+      return entityWithComponent.find(
+        (component) => component.type === componentType
+      );
+    }
+    return undefined;
+  }
+
   getComponentsByType(componentType) {
     const components = [];
 
