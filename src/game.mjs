@@ -2,7 +2,7 @@ import { PositionComponent } from "./engine/components/PositionComponent.mjs";
 import { RenderComponent } from "./engine/components/RenderComponent.mjs";
 import { WorldComponent } from "./engine/components/WorldComponent.mjs";
 import { InputSystem } from "./engine/systems/InputSystem.mjs";
-import { MovementSystem } from "./engine/systems/MovementSystem.mjs";
+import { CenitalView2DMovementSystem as MovementSystem } from "./engine/systems/CenitalView2DMovementSystem.mjs";
 import { RenderSystem } from "./engine/systems/RenderSystem.mjs";
 import { ComponentManager } from "./engine/managers/ComponentManager.mjs";
 import { SystemManager } from "./engine/managers/SystemManager.mjs";
@@ -43,7 +43,7 @@ export class Game {
     this.#speed = config.engineSpeed;
 
     this.#logger = new NoConsole();
-    // this.logger = console;
+    // this.#logger = console;
     this.#componentManager = new ComponentManager();
     this.#systemManager = new SystemManager();
     this.#entityManager = new EntityManager();

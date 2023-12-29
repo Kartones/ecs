@@ -5,7 +5,7 @@ import {
   WORLD_COMPONENT,
 } from "../components/constants.mjs";
 
-export class MovementSystem extends BaseSystem {
+export class CenitalView2DMovementSystem extends BaseSystem {
   constructor(componentManager, config = {}, logger) {
     super(componentManager, logger);
   }
@@ -20,25 +20,37 @@ export class MovementSystem extends BaseSystem {
         if (this._canMoveXAxis(positionComponent, worldComponent)) {
           positionComponent.x += positionComponent.velocity.x;
         } else {
-          if (positionComponent.velocity.x > 0) {
-            positionComponent.velocity.x--;
-          } else if (positionComponent.velocity.x < 0) {
-            positionComponent.velocity.x++;
+          // Either fully stop, or reduce velocity to minimum
+          if (
+            positionComponent.velocity.x === 1 ||
+            positionComponent.velocity.x === -1
+          ) {
+            positionComponent.velocity.x = 0;
+          } else if (positionComponent.velocity.x > 1) {
+            positionComponent.velocity.x = 1;
+          } else if (positionComponent.velocity.x < -1) {
+            positionComponent.velocity.x = -1;
           }
         }
         if (this._canMoveYAxis(positionComponent, worldComponent)) {
           positionComponent.y += positionComponent.velocity.y;
         } else {
-          if (positionComponent.velocity.y > 0) {
-            positionComponent.velocity.y--;
-          } else if (positionComponent.velocity.y < 0) {
-            positionComponent.velocity.y++;
+          // Either fully stop, or reduce velocity to minimum
+          if (
+            positionComponent.velocity.y === 1 ||
+            positionComponent.velocity.y === -1
+          ) {
+            positionComponent.velocity.y = 0;
+          } else if (positionComponent.velocity.y > 1) {
+            positionComponent.velocity.y = 1;
+          } else if (positionComponent.velocity.y < -1) {
+            positionComponent.velocity.y = -1;
           }
         }
 
-        this.logger.log(
-          `${positionComponent.entityId} position: (${positionComponent.x},${positionComponent.y})`
-        );
+        // this.logger.log(
+        //   `${positionComponent.entityId} position: (${positionComponent.x},${positionComponent.y})`
+        // );
       });
   }
 
