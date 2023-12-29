@@ -6,7 +6,7 @@ A basic [Entity Component System](https://en.wikipedia.org/wiki/Entity_component
 
 Captures keyboard input and renders basic pixels in an HTML canvas element.
 
-Can try the demo at https://kartones.net/demos/028/.
+Can try a demo of the `0.0.1` version at https://kartones.net/demos/028/.
 
 ## Tech Details
 
