@@ -15,3 +15,18 @@ The presence of an `EntityManager` right now is only for keeping track of all ex
 Game updates are done via `setTimeout`, so it is not 100% accurate. Currently set to update each `250` milliseconds.
 
 `InputManager` contains a very naive buffer, and is dependant on the engine/game update speed.
+
+## Requirements
+
+- A web browser and some local http server for running the HTML demo
+- NodeJS to run the tests. Tested with `v20` LTS
+
+## Testing
+
+WIP
+
+Written using [Node's built-in test capabilities](https://nodejs.org/docs/latest-v20.x/api/test.html).
+
+```bash
+node --test engine/managers/tests/
+```

@@ -49,7 +49,7 @@ export class CenitalView2DMovementSystem extends BaseSystem {
         }
 
         // this.logger.log(
-        //   `${positionComponent.entityId} position: (${positionComponent.x},${positionComponent.y})`
+        //   `${positionComponent.entityId} (${positionComponent.x},${positionComponent.y})`
         // );
       });
   }

@@ -37,21 +37,21 @@ export class Game {
       canvasHeight: RESOLUTION_HEIGHT,
       scaleFactor: SCALE_FACTOR,
       engineSpeed: ENGINE_SPEED,
+      loggingEnabled: true,
       ...config,
     };
 
     this.#speed = config.engineSpeed;
 
-    this.#logger = new NoConsole();
-    // this.#logger = console;
+    this.#logger = config.loggingEnabled ? console : new NoConsole();
     this.#componentManager = new ComponentManager();
     this.#systemManager = new SystemManager();
     this.#entityManager = new EntityManager();
 
     // Entities & components
     this.#worldEntityId = this.#entityManager.addEntity("W");
-    this.#entity1Id = this.#entityManager.addEntity("E1");
-    this.#entity2Id = this.#entityManager.addEntity("E2");
+    this.#entity1Id = this.#entityManager.addEntity("E");
+    this.#entity2Id = this.#entityManager.addEntity("E");
 
     const worldComponent = new WorldComponent(
       this.#worldEntityId,

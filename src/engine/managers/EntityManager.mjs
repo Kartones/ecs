@@ -1,4 +1,4 @@
-import { randomAlphanumericstring } from "../utils/random.mjs";
+export const ENTITY_PREFIX_GLUE = ":";
 
 export class EntityManager {
   #entities;
@@ -8,9 +8,10 @@ export class EntityManager {
   }
 
   addEntity(entityidPrefix = "") {
+    // For now we don't care about id collisions, as we can't delete entities
     const entityId = `${
-      entityidPrefix ? entityidPrefix + ":" : ""
-    }${randomAlphanumericstring()}`;
+      entityidPrefix ? entityidPrefix + ENTITY_PREFIX_GLUE : ""
+    }${this.#entities.length + 1}`;
 
     this.#entities.push(entityId);
 

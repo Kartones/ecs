@@ -5,6 +5,10 @@ export class ComponentManager {
     this.#componentsByEntity = {};
   }
 
+  get components() {
+    return this.#componentsByEntity;
+  }
+
   addComponent(component) {
     if (!this.#componentsByEntity[component.entityId]) {
       this.#componentsByEntity[component.entityId] = [];
