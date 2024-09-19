@@ -58,7 +58,7 @@ describe("ComponentManager", () => {
       assert(Object.keys(componentManager.components).length === 2);
     });
 
-    it("Adds components their corresponding entities", () => {
+    it("Adds components to their corresponding entities", () => {
       const componentManager = new ComponentManager();
       const entityId = "A";
       const aDummyComponent = new DummyComponent(entityId);
